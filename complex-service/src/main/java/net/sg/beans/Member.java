@@ -1,34 +1,33 @@
 package net.sg.beans;
 
+import static javax.persistence.CascadeType.DETACH;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REFRESH;
+import static javax.persistence.CascadeType.REMOVE;
+
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import static javax.persistence.CascadeType.*;
-import org.hibernate.validator.constraints.Email;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-public @Entity @Data @Builder class Member {
+
+@EqualsAndHashCode(callSuper=true)
+public @Entity @Data class Member extends Identity  {
 	
-	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
-	private String fName;
-	private String lName;	
-	private Integer age;	
-	private @Email String email;
-	private String phone;
-	private String address;
-	private String city;
-	private String country;
-	private Long zip;
-	private Byte photo;
 	@OneToMany(cascade={PERSIST, MERGE, REMOVE, REFRESH, DETACH}) 
 	private List <IdProof> idProofs;
-
+	@ManyToMany(cascade={PERSIST, MERGE, REMOVE, REFRESH, DETACH}) 
+	private List <Apartment> apartments;
+	@ManyToMany(cascade={PERSIST, MERGE, REMOVE, REFRESH, DETACH}) 
+	private List <Parking> parkings;
+	private Boolean payableDue;
+	private Boolean blocked;
+	private Boolean deleted;
 }
